@@ -105,14 +105,6 @@ class LinkedinOAuth2(BaseOAuth2):
             access_token=access_token)
         return headers
 
-    def request_access_token(self, *args, **kwargs):
-        # LinkedIn expects a POST request with querystring parameters, despite
-        # the spec http://tools.ietf.org/html/rfc6749#section-4.1.3
-        kwargs['params'] = kwargs.pop('data')
-        return super(LinkedinOAuth2, self).request_access_token(
-            *args, **kwargs
-        )
-
     def process_error(self, data):
         super(LinkedinOAuth2, self).process_error(data)
         if data.get('serviceErrorCode'):
