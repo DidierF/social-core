@@ -392,6 +392,16 @@ class BaseOAuth2(OAuthAuth):
         else:
             data = self.auth_complete_params(state)
 
+        import logging
+
+        logging.basicConfig(level=logging.DEBUG)
+
+        log = logging.getLogger('root')
+        log.debug('-----------------------------------------------------------')
+        log.debug(data)
+        log.debug(params)
+        log.debug(self.ACCESS_TOKEN_METHOD)
+        log.debug(self.access_token_url())
         response = self.request_access_token(
             self.access_token_url(),
             data=data,
@@ -400,6 +410,7 @@ class BaseOAuth2(OAuthAuth):
             auth=self.auth_complete_credentials(),
             method=self.ACCESS_TOKEN_METHOD
         )
+        log.debug('-----------------------------------------------------------')
         self.process_error(response)
         return self.do_auth(response['access_token'], response=response,
                             *args, **kwargs)
